@@ -4,7 +4,7 @@ module.exports = {
   createCategory: (data, callBack = () => {}) => {
     pool.query(
       `INSERT INTO Category (name) VALUES(?)`,
-      [data.category],
+      [data.name],
       (error, results, fields) => {
         if (error) {
           callBack(error);
