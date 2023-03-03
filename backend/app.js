@@ -4,12 +4,19 @@ const app = express();
 const router = require("./api/router/router");
 const blockchainRouter = require("./dev/router");
 app.use(express.json());
-const crors = require("cors");
+const cors = require("cors");
+
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.120:3000');
+//   next();
+// });
+
 app.use(
-  crors({
-    origin: "http://localhost:3000",
+  cors({
+    origin: "http://192.168.1.120:3000/admin-login",
   })
 );
+
 const port = process.argv[2];
 
 const SynchronizeNodes = require("./config/synchronizeNodes");
