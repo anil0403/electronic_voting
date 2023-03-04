@@ -1,4 +1,27 @@
-const ManageParty = () => {
+import { useEffect, useState } from "react";
+
+import { getParty } from "../../Api/ApiHandler";
+import Party from "../../components/Party";
+
+const ManageParty = (props) => {
+  //defining state
+  const [party, setParty] = useState([]);
+  const [refresh, setRefresh] = useState("");
+  const refreshData = sessionStorage.getItem("refreshData");
+
+  const token = props.token;
+  useEffect(() => {
+    getParty(token).then((response) => {
+      // console.log(response.data);
+      setParty(response.data);
+    });
+  }, [token, refresh, refreshData]);
+  // console.log(party);
+  // console.log(typeof party);
+  const refreshHnadler = (refreshData) => {
+    setRefresh(refreshData);
+  };
+
   return (
     <table class="styled-table">
       <thead>
@@ -9,11 +32,14 @@ const ManageParty = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>CPN UML</td>
-          <td class="action">Delete</td>
-        </tr>
+        {party.map((item) => (
+          <Party
+            token={token}
+            key={item.id}
+            data={item}
+            refreshHnadler={refreshHnadler}
+          />
+        ))}
       </tbody>
     </table>
   );

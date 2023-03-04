@@ -18,6 +18,7 @@ module.exports = {
       return res.status(200).json({
         success: 1,
         data: results,
+        message: "Category added successfully",
       });
     });
   },
@@ -50,7 +51,7 @@ module.exports = {
     });
   },
   deleteCategory: (req, res) => {
-
+    console.log("called");
     deleteCategory(req.body, (err, results) => {
       if (err) {
         console.log(err);

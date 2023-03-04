@@ -13,7 +13,7 @@ const cors = require("cors");
 
 app.use(
   cors({
-    origin: "http://192.168.1.120:3000/admin-login",
+    origin: "http://localhost:3000",
   })
 );
 

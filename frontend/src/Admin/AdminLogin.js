@@ -3,19 +3,16 @@ import { adminLogin } from "../Api/ApiHandler";
 
 const AdminLogin = (props) => {
   // defining states
-  const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState("");
 
   const login = (e) => {
     e.preventDefault();
     adminLogin(username, password).then((response) => {
-      // console.log(response.token);
-      setToken(response.token);
+      props.loginState(response.state, response.token);
+      setAlert(response.data);
     });
-    if (token) {
-      props.loginState(true);
-    }
   };
   return (
     <div class="container">
@@ -43,6 +40,7 @@ const AdminLogin = (props) => {
             />
             <button type="submit">Login</button>
           </form>
+          <div class="alert">{alert}</div>
         </div>
       </div>
     </div>

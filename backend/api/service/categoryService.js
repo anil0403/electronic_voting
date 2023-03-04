@@ -34,9 +34,10 @@ module.exports = {
     });
   },
   deleteCategory: (data, callBack) => {
+    console.log(`id = ${data.c_id}`);
     pool.query(
       `DELETE FROM category WHERE c_id = ?`,
-      [data.id],
+      [data.c_id],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -44,5 +45,5 @@ module.exports = {
         return callBack(null, results[0]);
       }
     );
-  }
+  },
 };

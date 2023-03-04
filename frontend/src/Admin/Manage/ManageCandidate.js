@@ -1,4 +1,29 @@
-const ManageCandidate = () => {
+import { getFullCandidate } from "../../Api/ApiHandler";
+import { useEffect, useState } from "react";
+import Candidate from "../../components/Candidate";
+
+const ManageCandidate = (props) => {
+  const token = props.token;
+
+  // defining state
+  const [candidateData, setCandidateData] = useState([]);
+  const [refresh, setRefresh] = useState("");
+  const refreshData = sessionStorage.getItem("refreshData");
+
+
+  useEffect(() => {
+    getFullCandidate(token).then((response) => {
+      console.log("candidate data: ");
+      console.log(response.data);
+      setCandidateData(response.data);
+    });
+  }, [token, refresh, refreshData]);
+
+  const refreshHnadler = (refreshData) => {
+    console.log("triggered")
+    setRefresh(refreshData);
+  };
+
   return (
     <table class="styled-table">
       <thead>
@@ -14,16 +39,16 @@ const ManageCandidate = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>Anil Shrestha</td>
-          <td>Kathmandu</td>
-          <td>9800000000</td>
-          <td>2057</td>
-          <td>President</td>
-          <td>CPN UML</td>
-          <td class="action">Delete</td>
-        </tr>
+        {candidateData.map((item) => {
+          return (
+            <Candidate
+              key={item.ca_id}
+              item={item}
+              refreshHnadler={refreshHnadler}
+              token={token}
+            />
+          );
+        })}
       </tbody>
     </table>
   );

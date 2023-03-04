@@ -4,7 +4,10 @@ import RegisterCategory from "./RegisterCategory";
 import RegisterParty from "./RegisterParty";
 
 const Register = (props) => {
-  const [isLoggedin, setIsLoggedin] = useState(false);
+  const token = props.token;
+
+  // defining states
+  // const [isLoggedin, setIsLoggedin] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
 
   //   tab function
@@ -12,6 +15,7 @@ const Register = (props) => {
     setActiveTab(formName);
   };
 
+  // refresh Handler function
   return (
     <>
       <div class="form-container">
@@ -44,7 +48,7 @@ const Register = (props) => {
           className={`form-content ${activeTab === "party" ? "active" : ""}`}
         >
           <h2>Add Party</h2>
-          <RegisterParty/>
+          <RegisterParty token={token} />
         </div>
 
         <div
@@ -52,14 +56,14 @@ const Register = (props) => {
           className={`form-content ${activeTab === "login" ? "active" : ""}`}
         >
           <h2>Add Category</h2>
-          <RegisterCategory />
+          <RegisterCategory token={token} />
         </div>
         <div
           id="register-form"
           className={`form-content ${activeTab === "register" ? "active" : ""}`}
         >
           <h2>Add Candidate</h2>
-          <RegisterCandidate />
+          <RegisterCandidate token={token} />
         </div>
       </div>
     </>

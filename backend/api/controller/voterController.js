@@ -25,6 +25,7 @@ module.exports = {
       return res.status(200).json({
         success: 1,
         data: results,
+        message: "Voter Created sucessfully",
       });
     });
   },
@@ -75,7 +76,6 @@ module.exports = {
     });
   },
   deleteVoter: (req, res) => {
-
     deleteVoter(req.body, (err, results) => {
       if (err) {
         console.log(err);
