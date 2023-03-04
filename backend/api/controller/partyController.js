@@ -17,6 +17,7 @@ module.exports = {
       return res.status(200).json({
         success: 1,
         data: results,
+        message: "Party added sucessfully",
       });
     });
   },

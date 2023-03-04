@@ -12,7 +12,7 @@ module.exports = {
         data.dob,
         data.c_id,
         data.p_id,
-        data.candidate_address
+        data.candidate_address,
       ],
       (error, results, fields) => {
         if (error) {
@@ -37,7 +37,7 @@ module.exports = {
   getCandidateByCategory: (data, callBack = () => {}) => {
     pool.query(
       `SELECT * FROM candidate WHERE c_id = ?`,
-      [data.category],
+      [data.c_id],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -54,10 +54,26 @@ module.exports = {
       return callBack(null, results);
     });
   },
+  getFullCandidate: (callBack = () => {}) => {
+    pool.query(
+      `SELECT Candidate.ca_id, Candidate.name, Candidate.address,candidate.citizenshipid, candidate.dob, Category.name AS category_name, Party.name AS party_name
+      FROM Candidate
+      JOIN Category ON Candidate.c_id = Category.c_id
+      JOIN Party ON Candidate.p_id = Party.p_id`,
+      [],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
   deleteCandidate: (data, callBack) => {
+    console.log(`ca_id = ${data.ca_id}`);
     pool.query(
       `DELETE FROM candidate WHERE ca_id = ?`,
-      [data.id],
+      [data.ca_id],
       (error, results, fields) => {
         if (error) {
           callBack(error);

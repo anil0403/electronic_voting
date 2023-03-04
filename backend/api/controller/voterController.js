@@ -10,7 +10,7 @@ const {
 
 module.exports = {
   createVoter: (req, res) => {
-    const salt = genSaltSync(5);
+    const salt = genSaltSync(10);
     req.body.voter_address = uuidv4().split("-").join(salt).split(".").join("");
     req.body.voter_id = Math.floor(Math.random() * 900000) + 100000;
     req.body.password = hashSync(req.body.password, salt);
@@ -25,6 +25,7 @@ module.exports = {
       return res.status(200).json({
         success: 1,
         data: results,
+        message: "Voter Created sucessfully",
       });
     });
   },
@@ -75,7 +76,6 @@ module.exports = {
     });
   },
   deleteVoter: (req, res) => {
-
     deleteVoter(req.body, (err, results) => {
       if (err) {
         console.log(err);

@@ -14,6 +14,7 @@ const {
   getCandidateById,
   getCandidateByCategory,
   deleteCandidate,
+  getFullCandidate,
 } = require("../controller/candidateController");
 const {
   createVoter,
@@ -46,26 +47,31 @@ const { userCheckToken } = require("../../auth/userTokenValidation");
 
 // router for category
 
-router.post("/create-category", createCategory);
-router.get("/get-category", getCategory);
-router.get("/get-category-by-id/:id", getCategoryById);
-router.delete("/delete-category", deleteCategory);
+router.post("/create-category", adminCheckToken, createCategory);
+router.get("/get-category", adminCheckToken, getCategory);
+router.get("/get-category-by-id/:id", adminCheckToken, getCategoryById);
+router.delete("/delete-category", adminCheckToken, deleteCategory);
 
 // router for candidate
 
-router.post("/create-candidate", createCandidate);
-router.get("/get-candidate", getCandidate);
-router.get("/get-candidate-by-id/:id", getCandidateById);
-router.get("/get-candidate-by-category/:category", getCandidateByCategory);
-router.delete("/delete-candidate", deleteCandidate);
+router.post("/create-candidate", adminCheckToken, createCandidate);
+router.get("/get-candidate", adminCheckToken, getCandidate);
+router.get("/get-candidate-by-id/:id", adminCheckToken, getCandidateById);
+router.get(
+  "/get-candidate-by-category/:category",
+  adminCheckToken,
+  getCandidateByCategory
+);
+router.delete("/delete-candidate", adminCheckToken, deleteCandidate);
+router.get("/get-full-candidate", adminCheckToken, getFullCandidate);
 
 // router for voter
 
-router.post("/create-voter", createVoter);
+router.post("/create-voter",userCheckToken, createVoter);
 router.get("/get-voter", adminCheckToken, userCheckToken, getVoter);
 router.get("/get-voter-by-id/:id", getVoterById);
-router.delete("/delete-voter", deleteVoter);
-router.post("/update-voter", updateVoterById);
+router.delete("/delete-voter",adminCheckToken, deleteVoter);
+router.post("/update-voter",adminCheckToken, userCheckToken, updateVoterById);
 
 //router for vote
 router.post("/create-vote", CreateVote);
@@ -73,12 +79,12 @@ router.delete("/delete-vote", DeleteVote);
 router.get("/get-stored-vote", GetVote);
 
 // router for party
-router.post("/create-party", createParty);
-router.get("/get-party", getParty);
-router.delete("/delete-party-by-id", deletePartyById);
+router.post("/create-party", adminCheckToken, createParty);
+router.get("/get-party", adminCheckToken, getParty);
+router.delete("/delete-party", adminCheckToken, deletePartyById);
 
 // admin
-router.post("/create-admin", createAdmin);
+router.post("/create-admin", adminCheckToken, createAdmin);
 
 //admin login
 router.post("/admin-login", login);

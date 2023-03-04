@@ -1,14 +1,15 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Manage from "./Manage/Manage";
 import Register from "./Register/Register";
 import AdminLogin from "./AdminLogin";
 import RegisterAdmin from "./Register/RegisterAdmin";
+import Result from "./Result";
 
 const Admin = () => {
   // defining states
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+  const [token, setToken] = useState("");
 
   //   tab function
   const showForm = (formName) => {
@@ -16,18 +17,33 @@ const Admin = () => {
   };
 
   // loggedin State Handler Function
-  const loginStateHandler = (state) => {
+  const loginStateHandler = (state, token) => {
+    console.log("from admin");
+    console.log(state);
+    console.log(token);
+    setToken(token);
     setIsLoggedin(state);
+    sessionStorage.setItem("isLoggedin", JSON.stringify(state));
+    sessionStorage.setItem("token", token);
   };
+
+  useEffect(() => {
+    const storedIsLoggedin = sessionStorage.getItem("isLoggedin");
+    const storedToken = sessionStorage.getItem("token");
+    if (storedIsLoggedin && storedToken) {
+      setIsLoggedin(JSON.parse(storedIsLoggedin));
+      setToken(storedToken);
+    }
+  }, []);
 
   return (
     <>
       {!isLoggedin ? (
         <AdminLogin loginState={loginStateHandler} />
       ) : (
-        <div class="admin-container">
+        <div className="admin-container">
           <h2>Admin Panel</h2>
-          <div class="form-tabs">
+          <div className="form-tabs">
             {/* register admin */}
             <button
               className={`tab ${activeTab === "admin" ? "active" : ""}`}
@@ -49,29 +65,47 @@ const Admin = () => {
             >
               Register
             </button>
+
+            {/* vote result */}
+            <button
+              className={`tab ${activeTab === "result" ? "active" : ""}`}
+              onClick={() => showForm("result")}
+            >
+              Vote Result
+            </button>
           </div>
-          {/* register admin */}
+          {/* register admin form */}
           <div
             id="admin-form"
             className={`form-content ${activeTab === "admin" ? "active" : ""}`}
           >
-            <RegisterAdmin />
+            <RegisterAdmin token={token} />
           </div>
-          {/* manage */}
+          {/* manage  */}
           <div
             id="login-form"
             className={`form-content ${activeTab === "login" ? "active" : ""}`}
           >
-            <Manage loginState={loginStateHandler} />
+            <Manage token={token} loginState={loginStateHandler} />
           </div>
-          {/* register */}
+          {/* register form  */}
           <div
             id="register-form"
             className={`form-content ${
               activeTab === "register" ? "active" : ""
             }`}
           >
-            <Register />
+            <Register token={token} />
+          </div>
+
+          {/* result */}
+          <div
+            id="result-form"
+            className={`form-content ${
+              activeTab === "result" ? "active" : ""
+            }`}
+          >
+            <Result token={token} />
           </div>
         </div>
       )}

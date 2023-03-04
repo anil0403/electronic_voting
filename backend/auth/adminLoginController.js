@@ -12,7 +12,8 @@ module.exports = {
       if (!results) {
         return res.json({
           success: 0,
-          data: "Invalid email or password",
+          data: "Invalid username or password",
+          state: false,
         });
       }
       const result = compareSync(body.password, results.password);
@@ -25,11 +26,13 @@ module.exports = {
           success: 1,
           message: "login successfully",
           token: jsontoken,
+          state: true,
         });
       } else {
         return res.json({
           success: 0,
-          data: "Invalid email or password",
+          data: "Invalid username or password",
+          state: false,
         });
       }
     });

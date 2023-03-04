@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ContainerDescription from "./ContainerDescription";
 import Login from "./UserManagement/Login";
 import Register from "./UserManagement/Register";
@@ -8,6 +8,8 @@ const User = () => {
   // defining states
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+  const [token, setToken] = useState("");
+  const [voterData, setVoterData] = useState("");
 
   //   tab function
   const showForm = (formName) => {
@@ -15,9 +17,31 @@ const User = () => {
   };
 
   // loggedin State Handler Function
-  const loginStateHandler = (state) => {
+  const loginStateHandler = (state, token, voterData) => {
+    setToken(token);
+    setVoterData(voterData);
     setIsLoggedin(state);
+    sessionStorage.setItem("isLoggedin", JSON.stringify(state));
+    sessionStorage.setItem("token", token);
   };
+
+  // loggedin State Handler Function
+  // const loginStateHandler = (state, token, voterData) => {
+  //   setToken(token);
+  //   setVoterData(voterData);
+  //   setIsLoggedin(state);
+  //   sessionStorage.setItem("isLoggedin", JSON.stringify(state));
+  //   sessionStorage.setItem("token", token);
+  // };
+
+  useEffect(() => {
+    const storedIsLoggedin = sessionStorage.getItem("isLoggedin");
+    const storedToken = sessionStorage.getItem("token");
+    if (storedIsLoggedin && storedToken) {
+      setIsLoggedin(JSON.parse(storedIsLoggedin));
+      setToken(storedToken);
+    }
+  }, []);
 
   return (
     <>
@@ -42,7 +66,6 @@ const User = () => {
                 Register
               </button>{" "}
             </div>
-            
 
             <div
               id="login-form"
@@ -60,12 +83,12 @@ const User = () => {
               }`}
             >
               <h2>Register</h2>
-              <Register/>
+              <Register />
             </div>
           </div>
         </div>
       ) : (
-        <Vote loginState={loginStateHandler} />
+        <Vote token={token} data={voterData} loginState={loginStateHandler} />
       )}
     </>
   );

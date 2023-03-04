@@ -4,6 +4,7 @@ import ManageParty from "./ManageParty";
 import ManageVoter from "./ManageVoter";
 
 const Manage = (props) => {
+  const token = props.token;
   const logout = () => {
     props.loginState(false);
   };
@@ -14,20 +15,20 @@ const Manage = (props) => {
       </button>
       <div class="container-item">
         <h2>Manage Party</h2>
-        <ManageParty/>
+        <ManageParty token={token} />
       </div>
 
       <div class="container-item">
         <h2>Manage Category</h2>
-        <ManageCategory />
+        <ManageCategory token={token} />
       </div>
       <div class="container-item">
         <h2>Manage Candidate</h2>
-        <ManageCandidate />
+        <ManageCandidate token={token} />
       </div>
       <div class="container-item">
         <h2>Manage Voter</h2>
-        <ManageVoter />
+        <ManageVoter token={token} />
       </div>
     </div>
   );

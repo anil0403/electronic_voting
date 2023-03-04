@@ -72,7 +72,7 @@ module.exports = {
   deleteVoter: (data, callBack) => {
     pool.query(
       `DELETE FROM voter WHERE v_id = ?`,
-      [data.id],
+      [data.v_id],
       (error, results, fields) => {
         if (error) {
           callBack(error);

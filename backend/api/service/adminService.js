@@ -19,7 +19,7 @@ module.exports = {
       [username],
       (error, results, field) => {
         if (error) {
-          // console.log(error);
+          console.log(error);
           callBack(error);
         }
         return callBack(null, results[0]);

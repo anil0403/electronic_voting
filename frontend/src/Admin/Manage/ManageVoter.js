@@ -1,4 +1,25 @@
-const ManageVoter = () => {
+import { useState, useEffect } from "react";
+import { getVoter } from "../../Api/ApiHandler";
+import Voter from "../../components/Voter";
+const ManageVoter = (props) => {
+  // defining states
+  const [voterData, setVoterData] = useState([]);
+  const [refresh, setRefresh] = useState("");
+
+  const refreshData = sessionStorage.getItem("refreshData");
+
+
+  const token = props.token;
+  useEffect(() => {
+    getVoter(token).then((response) => {
+      setVoterData(response.data);
+    });
+  }, [token, refresh, refreshData]);
+
+  const refreshHandler = (refreshData) => {
+    setRefresh(refreshData);
+  };
+
   return (
     <table class="styled-table">
       <thead>
@@ -12,14 +33,11 @@ const ManageVoter = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>Sandesh Bhusal</td>
-          <td>Butwal</td>
-          <td>bhusalshandesh0@gmail.com</td>
-          <td>2057</td>
-          <td class="action">Delete</td>
-        </tr>
+        {voterData.map((item) => {
+          return (
+            <Voter item={item} token={token} refreshHandler={refreshHandler} />
+          );
+        })}
       </tbody>
     </table>
   );
